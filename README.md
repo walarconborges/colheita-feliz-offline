@@ -12,7 +12,18 @@ Para ativar: **Settings → Pages → Build and deployment → Deploy from a bra
 
 ## Como jogar offline
 
-Baixe o arquivo [index.html](./index.html) e abra-o no Chrome ou Edge. As imagens estão incorporadas ao HTML; o jogo não precisa de servidor nem de conexão com a internet.
+Para jogar sem internet, baixe **o repositório completo** em **Code → Download ZIP**, extraia o ZIP e abra `index.html` no Chrome ou Edge. **Não baixe apenas `index.html`:** ele depende das imagens nas pastas `assets/`.
+
+## Organização dos gráficos
+
+Os gráficos estão em arquivos separados, mantendo os caminhos utilizados pelo jogo:
+
+- `assets/original/` — terrenos, ferramentas e recursos originais (32 arquivos).
+- `assets/crops/` — plantações (67 arquivos).
+- `assets/animals/` — animais (10 arquivos).
+- `assets/decor/` — decorações (15 arquivos).
+
+Para incluir ou substituir gráficos, use os caminhos correspondentes no código. As imagens deixaram de ser incorporadas em Base64 ao HTML.
 
 ## Salvamento
 
@@ -20,6 +31,6 @@ O jogo salva o progresso no armazenamento local do navegador. Cada navegador ou 
 
 ## Projeto
 
-Versão inicial publicada: **0.3**. O código e os elementos visuais passarão por melhorias graduais, especialmente no cenário isométrico, ícones e animações.
+Versão inicial publicada: **0.3**. Os gráficos agora ficam em arquivos separados para facilitar melhorias no cenário isométrico, ícones e animações.
 
 **Nota sobre recursos gráficos:** esta edição experimental utiliza materiais recuperados de arquivos de jogos antigos para avaliação e reconstrução. A presença desses arquivos neste repositório não significa que estejam liberados para redistribuição comercial.
