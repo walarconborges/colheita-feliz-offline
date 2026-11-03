@@ -124,16 +124,18 @@ function scenery(t){
  for(let a=0;a<65;a++){let x=776+(a*43%340),y=157+(a*59%155);oval(x,y,2,1,'#8dcd4c');}
  fenceSegment(761,153,864,130);fenceSegment(864,130,975,108);fenceSegment(975,108,1109,130);fenceSegment(761,153,761,281);fenceSegment(761,281,875,337);fenceSegment(875,337,997,327);fenceSegment(997,327,1114,294);
  // animal sprites are extracted from the actual QFarm images
- function animal(n,x,y,w,h){oval(x+w*.46,y+h-7,w*.30,7,'#568f3677');sprite(n,x,y+Math.sin(t/900+x)*2,w,h);}
+ function animal(n,x,y,w,h){
+  const i=img[n], ratio=(i?.naturalWidth&&i?.naturalHeight)?i.naturalWidth/i.naturalHeight:w/h;
+  let dw=w,dh=w/ratio;
+  if(dh>h){dh=h;dw=h*ratio;}
+  const px=x+(w-dw)/2, py=y+h-dh+Math.sin(t/900+x)*2;
+  oval(x+w/2,y+h-5,Math.max(12,dw*.32),Math.max(4,dh*.09),'#568f3677');
+  sprite(n,px,py,dw,dh);
+ }
  animal('ovelha',815,185,85,75);
- // Cartoon milking cow with its black and white markings, as in the Orkut scenery
- g.save();g.translate(990,224+Math.sin(t/1200)*2);oval(0,11,58,12,'#538b3579');
- g.fillStyle='#f8f8ee';g.strokeStyle='#8a8a7d';g.lineWidth=2;for(let k of [-35,-7,24,45]){g.fillRect(k,-1,11,39);g.strokeRect(k,-1,11,39);}
- oval(-1,-11,54,28,'#f2f1e3');oval(-17,-23,18,17,'#393b39');oval(14,-2,23,18,'#383b39');oval(33,-18,13,11,'#3f413f');
- oval(-45,-20,24,21,'#f6f5e9');oval(-57,-13,13,10,'#e6a9a0');oval(-59,-13,4,3,'#985e58');oval(-50,-13,4,3,'#985e58');
- polygon([[-55,-38],[-63,-55],[-45,-41]],'#f2eee4','#8b8d82',1);polygon([[-33,-37],[-23,-51],[-21,-34]],'#f2eee4','#8b8d82',1);
- oval(-51,-26,3,4,'#363c36');line([[47,-20],[68,-32],[74,-23]],'#51564f',3);oval(12,21,16,9,'#ebb2b3');g.restore();
- animal('galinha',1083,225,49,56);animal('galo',902,270,66,60);animal('pato',1032,275,45,44);animal('coelho',777,304,55,46);
+ // Use the QFarm cow art instead of the temporary vector reconstruction.
+ animal('vaca',925,151,148,115);
+ animal('galinha',1083,225,49,56);animal('galo',902,270,66,60);animal('pato',1032,275,45,44);animal('coelho',777,285,55,66);
  // Trees and butterflies around the field
  for(let i=0;i<3;i++){let x=85+i*36,y=270+(i%2)*24;oval(x,y,32,13,'#6da43c');for(let k=0;k<6;k++)vecflower(x-27+k*10,y-10+(k%2)*10,.68,k%2?'#fef6f9':'#e9a5bd');}
  for(let k=0;k<4;k++){let x=105+k*247+Math.sin(t/700+k)*14,y=265+(k%2)*140+Math.cos(t/650+k)*11;g.save();g.translate(x,y);g.rotate(Math.sin(t/260+k)*.25);oval(-5,-2,7,4,k%2?'#ffb6d4':'#f8f06a');oval(5,-2,7,4,k%2?'#d287d3':'#fdb04c');g.fillStyle='#463924';g.fillRect(-1,-5,2,9);g.restore();}
