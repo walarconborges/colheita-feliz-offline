@@ -34,3 +34,9 @@ O jogo salva o progresso no armazenamento local do navegador. Cada navegador ou 
 Versão inicial publicada: **0.3**. Os gráficos agora ficam em arquivos separados para facilitar melhorias no cenário isométrico, ícones e animações.
 
 **Nota sobre recursos gráficos:** esta edição experimental utiliza materiais recuperados de arquivos de jogos antigos para avaliação e reconstrução. A presença desses arquivos neste repositório não significa que estejam liberados para redistribuição comercial.
+
+## Animais e produção (versão 0.4)
+
+Abra **Animais** para comprar galinhas, patos, ovelhas e porcos. Os animais começam a produzir após a compra; os tempos respeitam a velocidade selecionada em **Opções**. Quando a produção estiver pronta, use **Coletar** na janela dos animais ou clique diretamente no animal dentro do cercado. Os produtos vão para o estoque do criatório e também aparecem no **Celeiro**, onde podem ser vendidos. Vaca, coelho e galo permanecem decorativos nesta versão.
+
+As miniaturas dos animais foram mantidas provisoriamente, com escala limitada para evitar distorção. A conversão e integração dos sprites animados originais ainda estão pendentes.

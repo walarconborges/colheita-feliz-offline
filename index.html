@@ -295,10 +295,17 @@ function renderGoods(){const root=$('goods');if(!root)return;let q=($('searchCro
  root.onclick=e=>{let a=e.target.closest('[data-buy]'),p=e.target.closest('[data-pick]');if(a){let c=BY[+a.dataset.buy],cost=c.price*chosenQty;if(!c||c.level>lvl()||S.coins<cost)return;S.coins-=cost;S.seeds[c.id]=(S.seeds[c.id]||0)+chosenQty;S.selected=c.id;S.tool='seed';persist();updateHud();flash('Comprou '+chosenQty+' × '+c.name+'.');renderGoods();}if(p){S.selected=+p.dataset.pick;setTool('seed');persist();close();flash(BY[S.selected].name+' selecionado para plantar.');}};}
 function escapeHtml(t){return String(t).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));}
 function barn(){let arr=Object.entries(S.barn).filter(([id,n])=>BY[id]&&n>0).sort((a,b)=>+a[0]-+b[0]);let value=arr.reduce((a,[id,n])=>a+n*BY[id].sale,0);let html=`<div class="balance">Produtos guardados · Valor total: ${fmt(value)} moedas</div>`;
- if(!arr.length)html+='<div class="empty">Seu celeiro está vazio. Use a ferramenta Colher para guardar os produtos de suas plantações.</div>';
+ if(!arr.length)html+='<div class="empty">Ainda não há plantações colhidas. Os produtos dos animais aparecem abaixo quando são coletados.</div>';
  else{html+='<div class="inventory">'+arr.map(([id,n])=>{let c=BY[id];return `<article class="good"><img src="${c.icon}" alt=""><div class="goodmain"><b>${escapeHtml(c.name)} × ${fmt(n)}</b><small>${c.sale} moedas / unidade</small></div><div class="goodbuttons"><button data-sell="${id}">Vender ${fmt(n*c.sale)}</button></div></article>`;}).join('')+'</div><button class="action" id="sellall">Vender toda a produção</button>';}
  html+='<div class="setting"><b>Estoque de sementes</b><p>'+Object.entries(S.seeds).filter(([id,n])=>BY[id]&&n>0).map(([id,n])=>escapeHtml(BY[id].name)+' × '+n).join(' · ')+'</p></div>';
- $('modalbody').innerHTML=html;$('modalbody').onclick=e=>{let b=e.target.closest('[data-sell]');if(b){let c=BY[+b.dataset.sell],n=S.barn[c.id]||0;if(!n)return;S.coins+=n*c.sale;S.stats.sold+=n;delete S.barn[c.id];persist();updateHud();flash('Venda realizada: '+fmt(n*c.sale)+' moedas.');barn();}if(e.target.closest('#sellall')){for(let [id,n]of Object.entries(S.barn)){if(BY[id]&&n>0){S.coins+=n*BY[id].sale;S.stats.sold+=n;}}S.barn={};persist();updateHud();flash('Todo o estoque foi vendido.');barn();}};}
+ const animalItems=ANIMALS.filter(a=>(S.animalStorage[a.id]||0)>0);
+ if(animalItems.length){
+  const total=animalItems.reduce((sum,a)=>sum+S.animalStorage[a.id]*a.unit,0);
+  html+='<div class="setting"><b>Produtos dos animais</b><p>'+animalItems.map(a=>a.product+': '+fmt(S.animalStorage[a.id])+' unidade(s)').join(' · ')+'</p><button class="action secondary" id="sellallanimals">Vender produção dos animais · '+fmt(total)+' moedas</button></div>';
+ }
+ $('modalbody').innerHTML=html;$('modalbody').onclick=e=>{
+ if(e.target.closest('#sellallanimals')){sellAnimalProducts();barn();return;}
+ let b=e.target.closest('[data-sell]');if(b){let c=BY[+b.dataset.sell],n=S.barn[c.id]||0;if(!n)return;S.coins+=n*c.sale;S.stats.sold+=n;delete S.barn[c.id];persist();updateHud();flash('Venda realizada: '+fmt(n*c.sale)+' moedas.');barn();}if(e.target.closest('#sellall')){for(let [id,n]of Object.entries(S.barn)){if(BY[id]&&n>0){S.coins+=n*BY[id].sale;S.stats.sold+=n;}}S.barn={};persist();updateHud();flash('Todo o estoque foi vendido.');barn();}};}
 function animals(){
  let html='<p class="mininote">Compre um animal para iniciar a produção. Para coletar, clique em <b>Coletar</b> ou diretamente no animal do cercado. Vaca, coelho e galo ainda são decorativos.</p><div class="animalcards">';
  for(let a of ANIMALS){
